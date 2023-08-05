@@ -1,29 +1,29 @@
 //Create the Earthquake Visualization
 
-// 1.Get your dataset: https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
+// 1.Dataset Link: https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
 
 let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-  // Getting our GeoJSON data
+  // GeoJSON data
 
 d3.json(url).then(function(data) {
-  // Once we get a response, send the data.features object to the createFeatures function.
+  // Sending the data.features object to the createFeatures function.
   createFeatures(data.features)});
 
-// 2. Import and visualize the data by doing the following:
-    // Your data markers should reflect the below:
+// 2. Import and visualize the data:
+    
         // Size = magnitude of the earthquake
         // Color = depth of the earthquake 
 
 function createFeatures(earthquakeData) {
         
-    //additional information pop-up when marker is clicked
+    //More information - pop-up when marker is clicked
     function onEachFeature(feature, layer) {
     layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`)}
 
     function createCircleMarker(feature, latlng){
 
-    // Setting Marker Radius
+    // Marker Radius
     let options = {
         radius:feature.properties.mag*5,
         fillColor: chooseColor(feature.geometry.coordinates[2]),
@@ -33,15 +33,15 @@ function createFeatures(earthquakeData) {
         fillOpacity: 0.40}; 
        return L.circleMarker(latlng,options)};
 
-  // Create a GeoJSON layer that contains the features array on the earthquakeData object.
-  // Run the onEachFeature function once for each piece of data in the array.
+  // GeoJSON layer that contains the features array on the earthquakeData object
+  // onEachFeature function once for each piece of data in the array
   let earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature, pointToLayer: createCircleMarker});
 
-  // Send our earthquakes layer to the createMap function/
+  // Sending the earthquakes layer to the createMap function/
   createMap(earthquakes)};
     
-  //Setting Marker Color
+  // Marker Color
 function chooseColor(depth) {
     if (depth > 90 ) return "red";
     else if (depth > 70 ) return "pink";
@@ -50,8 +50,8 @@ function chooseColor(depth) {
     else if (depth > 10 ) return "lime";
     else return "green"};
 
-// Using Leaflet, create a map that plots all the earthquakes from your 
-// dataset based on their longitude and latitude.
+// Map that plots all the earthquakes (long & lat)
+
 function createMap(earthquakes) {
 
     // Create the base layers.
